@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- <link rel="stylesheet" type="text/css" href="estilos.css"> -->
+    <style>
+        body{
+            background-color: grey;
+        }
+
+        .titulo{
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 2.5rem;
+            text-align: center;
+        }
+
+        .contenedor{
+            display: flex;
+            flex-direction: column;
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 2rem;
+            border-radius: 35px 35px 35px 35px;
+            background-color: black;
+            color: green;
+            margin: auto;
+            padding: 20px;
+            width: 50%;
+        }
+
+        input{
+            font-size: 1.8rem;
+        }
+
+        label{
+            margin-bottom: 10px;
+        }
+
+        .boton{
+            margin-top: 50px;
+            border-radius: 35px 35px 35px 35px;
+            cursor: pointer;
+        }
+
+        table{
+            font-size: 1.5rem;
+            font-family: Arial, Helvetica, sans-serif;
+            width: 50%;
+            margin: auto;
+            text-align: center;
+            color: green;
+            background-color: black;
+            border-radius: 35px 35px 35px 35px;
+        }
+
+        table th{
+            border-bottom: green solid 2px;
+        }
+
+        img{
+            width: 70px;
+            height: 70px;
+        }
+
+        #mensajes{
+            display: flex;
+            flex-direction: column;
+            color: brown;
+        }
+
+        .mensajeCompleto{
+            font-size: 1.3rem;
+        }
+
+        .email{
+            color: blue;
+        }
+
+        .mensaje{
+            color: green;
+        }
+
+        .aviso{
+            background-color: lightsalmon;
+            color: maroon;
+            font-size: 2rem;
+            font-family: Arial, Helvetica, sans-serif;
+            text-align: center;
+        }
+    </style>
+    <title>Formulario</title>
+</head>
+<body>
+    {{{body}}}
+
+    <!--<script src="https://cdn.jsdelivr.net/npm/normalizr@3.6.1/dist/normalizr.browser.min.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        const socket = io.connect()
+
+        let nombre = document.querySelector('#nombre');
+        let precio = document.querySelector('#precio');
+        let urlFoto = document.querySelector('#urlFoto');
+    
+        const productoIngresado = document.querySelector('#ingresarProd');
+        productoIngresado.addEventListener('click', () => {
+
+            if(nombre.value === ''|| precio.value === ''|| urlFoto.value === ''){
+                document.querySelector('#avisoForm').innerText = 'Ingrese los todos los campos';
+            }else{
+                document.querySelector('#avisoForm').innerText = '';
+
+                socket.emit('productoIngresado', {
+                    nombre: nombre.value,
+                    precio: precio.value,
+                    foto: urlFoto.value
+                })
+            }
+        })
+
+        socket.on('productos', productos => {
+            const template = Handlebars.compile('{{#if productos}}<table><tr><th>Nombre</th><th>Precio</th><th>Foto</th></tr>{{#each productos}}<tr><td>{{this.nombre}}</td><td>${{this.precio}}</td><td><img src="{{this.foto}}"></td></tr>{{/each}}</table>{{else}}<p class="aviso">No hay productos</p>{{/if}}');
+            const htmlGenerado = template(productos);
+            document.querySelector('#productos').innerHTML = htmlGenerado;
+        })
+
+        let email = document.querySelector('#email');
+        let nombreMensaje = document.querySelector('#nombreMensaje');
+        let apellido = document.querySelector('#apellido');
+        let edad = document.querySelector('#edad');
+        let alias = document.querySelector('#alias');
+        let mensaje = document.querySelector('#mensaje');
+
+        const mensajeEnviado = document.querySelector('#enviarMsg');
+        mensajeEnviado.addEventListener('click', () => {
+
+            if(email.value === ''|| mensaje.value === '' || nombreMensaje.value === '' || apellido.value === '' || edad.value === '' || alias.value === ''){
+                document.querySelector('#avisoChat').innerText = 'Todos los campos son obligatorios';
+            }else{
+                document.querySelector('#avisoChat').innerText = '';
+
+                socket.emit('mensajeNuevo', {
+                    author:{
+                       id: email.value,
+                       nombre: nombreMensaje.value,
+                       apellido: apellido.value,
+                       edad: edad.value,
+                       alias: alias.value
+                    },
+                    text: mensaje.value
+                })
+            }
+        })
+    
+        socket.on('mensajes', mensajes => {
+            const user = new normalizr.schema.Entity('users',{idAttribute: 'email'})
+            const mensaje = new normalizr.schema.Entity('mensajes',{author: user})
+            const listaMensajes = new normalizr.schema.Entity('listaMensajes',{mensajes: [mensaje]},{idAttribute: 'id'})
+
+            const denormalizedData =  normalizr.denormalize(mensajes.mensajes.result, listaMensajes, mensajes.mensajes.entities)
+            
+            const template = Handlebars.compile('{{#if mensajes}}{{#each mensajes}}<img src={{this.author.avatar}}></img><p class="mensajeCompleto"><b class="email">{{this.author.id}}</b> {{this.fecha}}: <i class="mensaje">{{this.text}}</i></p>{{/each}}{{else}}<p class="aviso">No hay mensajes</p>{{/if}}');
+            const htmlGenerado = template(denormalizedData);
+            document.querySelector('#mensajes').innerHTML = htmlGenerado;
+        })
+
+        
+
+        socket.on('logs', logs => {
+            const template = Handlebars.compile('{{#if nombre}}<p>Bienvenido {{nombre}}</p><form action="/api/logout" method="get"><a href="logout.html"><input type="submit" value="LogOut"></a></form>{{else}}<a href="login.html">LOGIN</a>{{/if}}');
+            const htmlGenerado = template(logs);
+            document.querySelector('#log').innerHTML = htmlGenerado;
+            console.log(logs)
+        })
+         
+    </script>-->
+</body>
+</html>

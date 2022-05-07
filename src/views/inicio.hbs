@@ -1,0 +1,71 @@
+{{#if datos}}
+    <div>
+        <p>{{datos.nombre}}</p>
+        <p>Email:{{datos.email}}</p>
+        <img src="{{datos.foto}}" alt="foto">
+        <a href="/api/logout">logout</a>
+    </div>
+{{/if}}
+<p class="titulo">Ingrese un producto</p>
+    <p class="aviso" id="avisoForm"></p>
+    <form action="/api/productos" method="post" class="contenedor">
+        <label>Nombre</label>
+        <input type="text" name="nombre" placeholder="Nombre" id="nombre">
+        <label>Precio</label>
+        <input type="number" name="precio" placeholder="Precio" id="precio">
+        <label>Foto</label>
+        <input type="text" name='urlFoto' placeholder="URL Foto" id="urlFoto">
+        <input type="submit" id="ingresarProd" value="Ingresar" class="boton">
+    </form>
+    <p class="titulo">Productos</p>
+    <div id="productos">
+        {{#if productos}}
+            <table>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Precio</th>
+                    <th>Foto</th>
+                </tr>
+            {{#each productos}}
+                <tr>
+                    <td>{{this.nombre}}</td>
+                    <td>${{this.precio}}</td>
+                    <td><img src="{{this.foto}}"></td>
+                </tr>
+            {{/each}}
+            </table>
+        {{else}}
+            <p class="aviso">No hay productos</p>
+        {{/if}}
+    </div>
+    <p class="titulo">Chat</p>
+    <p class="aviso" id="avisoChat"></p>
+    <form action="/api/mensajes" method="post" class="contenedor">
+        <label>Email</label>
+        <input type="email" name="email" id="email" placeholder="ejemplo@mail.com">
+        <label>Nombre</label>
+        <input type="text" id="nombreMensaje" name="nombreMensaje" placeholder="Nombre">
+        <label>Apellido</label>
+        <input type="text" id="apellido" name="apellido" placeholder="Apellido">
+        <label>Edad</label>
+        <input type="text" id="edad" name="edad" placeholder="18">
+        <label>Alias</label>
+        <input type="text" id="alias" name="alias" placeholder="Alias">
+        <label>Mensaje</label>
+        <input type="text" id="mensaje" name="mensaje" placeholder="Escribe tu mensaje">
+        <input type="submit" id="enviarMsg" class="boton" value="Enviar">
+        
+    </form>
+    <div class="contenedor">
+        <p class="mensaje">Mensajes</p>
+        <div id="mensajes">
+            {{#if mensajes}}
+                {{#each mensajes}}
+                    <img src="{{this.avatar}}"></img>
+                    <p class="mensajeCompleto"><b class="email">{{this.email}}</b> {{this.fecha}}: <i class="mensaje">{{this.mensaje}}</i></p>
+                {{/each}}
+            {{else}}
+                <p class="aviso">No hay mensajes</p>
+            {{/if}}
+        </div>
+    </div>
