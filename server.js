@@ -1,6 +1,9 @@
 const express = require('express');
 const path = require('path');
 const minimist = require('minimist')
+require('dotenv').config()
+
+const {fork} = require('child_process')
 
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
@@ -8,16 +11,10 @@ const session = require('express-session');
 const {faker} = require('@faker-js/faker')
 const Memoria = require('./src/contenedores/contenedorMemoria.js')
 
-
 const app = express();
+
 let options = {alias: {p: 'puerto'}}
 let args = minimist(process.argv, options)
-console.log(minimist(process.argv, options));
-
-console.log(process.env);
-
-
-
 
 const passport = require('passport');
 const FacebookStrategy = require('passport-facebook').Strategy;
@@ -50,12 +47,10 @@ app.use(session({
    }
 }))
 
-const FACEBOOK_APP_ID = 'xxxxxxx';
-const FACEBOOK_APP_SECRET = 'xxxxxxxxxxxxxxxxxxx';
 
 passport.use(new FacebookStrategy({
-   clientID: FACEBOOK_APP_ID,
-   clientSecret: FACEBOOK_APP_SECRET,
+   clientID: process.env.FACEBOOK_APP_ID,
+   clientSecret: process.env.FACEBOOK_APP_SECRET,
    callbackURL: "http://localhost:8080/auth/facebook/callback",
    profileFields: ['id', 'displayName', 'photos', 'email']
  },
@@ -76,20 +71,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 const productos = new Memoria();
-const productosAleatorios = new Memoria();
 const mensajes = new Memoria();
-
-app.get('/api/productos-test', (req,res)=>{
-   productosAleatorios.deleteAll()
-   for (let i = 0; i < 5; i++) {
-      productosAleatorios.save({
-         nombre: faker.commerce.product(),
-         precio: faker.commerce.price(),
-         foto: faker.image.abstract()
-      })
-   }
-   res.redirect('../index.html')
-})
 
 app.get('/', (req,res)=>{
    if(req.isAuthenticated()){
@@ -148,6 +130,30 @@ app.post('/api/mensajes', (req,res) =>{
    mensajes.save(mensaje)
    res.redirect('/')
 });
+
+app.get('/info', (req,res)=>{
+
+    res.render('info', {
+        argsEnt: process.argv.slice(2),
+        nomPlat: process.platform,
+        verNode: process.version,
+        memToRev: JSON.stringify(process.memoryUsage().rss),
+        pathExe: process.execPath,
+        procId: process.pid,
+        carProy: process.cwd()
+    })
+})
+
+app.get('/api/randoms', (req,res) => {
+    console.log('no bloqueante antes')
+    const randoms = fork('./random.js')
+    randoms.send({query: req.query.cant})
+    randoms.on('message', randoms =>{
+        console.log(randoms)
+        res.render('random', {random: JSON.stringify(randoms)})
+    })
+    console.log('no bloqueante despues')
+})
 
 
 const PORT = args.puerto || 8080;
