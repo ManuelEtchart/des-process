@@ -149,7 +149,6 @@ app.get('/api/randoms', (req,res) => {
     const randoms = fork('./random.js')
     randoms.send({query: req.query.cant})
     randoms.on('message', randoms =>{
-        console.log(randoms)
         res.render('random', {random: JSON.stringify(randoms)})
     })
     console.log('no bloqueante despues')
